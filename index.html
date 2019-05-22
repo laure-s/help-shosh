@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Help Shoshke!</title>
+    <meta name="description" content="Help save shoshke by finding clues she left behind!">
+    <script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-animation-component/dist/aframe-animation-component.min.js"></script>
+  <script src="aframe.min.js"></script>
+  <script type="text/javascript">
+  AFRAME.registerComponent('main-ui', {
+  schema: {
+    events: {type: 'string', default: ''},
+  },
+  init: function ()
+  {
+    var firstClue = document.querySelector('#first-clue')
+    var secondClue = document.querySelector('#second-clue')
+    var thirdClue = document.querySelector('#third-clue')
+    var fourthClue = document.querySelector('#fourth-clue')
+
+    var mainCamera = document.querySelector('#main-camera')
+    var logo = document.querySelector('#logo-image')
+    var logoPlane = document.querySelector('#openning-screen')
+
+    var end = document.querySelector('#end-image')
+
+    var firstWorld = document.querySelector('#r1')
+
+    var shosh_sound = new Audio("https://cdn.glitch.com/b2b5616a-4d63-44dc-928f-a04ea904e623%2Fhelpshosh.mp3?1526253983343");
+    var lose_sound = new Audio("https://cdn.glitch.com/b2b5616a-4d63-44dc-928f-a04ea904e623%2F412168__screamstudio__arcade-game-over.wav?1526311890127");
+    var win_sound = new Audio("https://cdn.glitch.com/b2b5616a-4d63-44dc-928f-a04ea904e623%2F395244__hoshi-hana__happy.wav?1526311914917");
+    var lose_talk = new Audio("https://cdn.glitch.com/b2b5616a-4d63-44dc-928f-a04ea904e623%2FGO2.mp3?1526311687680");
+    var win_talk = new Audio("https://cdn.glitch.com/b2b5616a-4d63-44dc-928f-a04ea904e623%2FYouSavedme2.mp3?1526311688902");
+
+    firstClue.addEventListener('click', function (e) {
+      // Tell the camera to start its animation forward
+      mainCamera.setAttribute('position', '0 0 250')
+    })
+    secondClue.addEventListener('click', function (e) {
+      // Tell the camera to start its animation forward
+      mainCamera.setAttribute('position', '0 0 430')
+
+    })
+  thirdClue.addEventListener('click', function (e) {
+      // Tell the camera to start its animation forward
+      mainCamera.setAttribute('position', '0 0 650')
+    })
+  fourthClue.addEventListener('click', function (e) {
+      // Tell the camera to start its animation forward
+      endGame(true);
+    })
+  logo.addEventListener('click', function (e) {
+      logoPlane.setAttribute('visible', false)
+      firstClue.setAttribute('visible', true)
+      startTimer()
+      shosh_sound.play();
+      console.log("click")
+      firstWorld.setAttribute('color', "#FFFFFF")
+    })
+
+    var timerText = document.getElementById('timer')
+    timerText.setAttribute('value', "01:00");
+
+    var startTimer = function () {
+      var presentTime = timerText.getAttribute('value');
+
+      var timeArray = presentTime.split(/[:]+/);
+      var m = timeArray[0];
+      var s = checkSecond((timeArray[1] - 1));
+      if(s==59){m=m-1}
+      if(m<=0 && s==0){
+        endGame(false);
+        return;
+      }
+
+          timerText.setAttribute('value', m + ":" + s);
+      setTimeout(startTimer, 1000);
+  }
+
+  var checkSecond = function (sec) {
+    if (sec < 10 && sec >= 0) {sec = "0" + sec}; // add zero in front of numbers < 10
+    if (sec < 0) {sec = "59"};
+    return sec;
+  }
+
+  var endGame = function (winBool){
+    timerText.setAttribute('visible', "false");
+    timerText.setAttribute('value', "05:00");
+    mainCamera.setAttribute('position', '0 0 867')
+    mainCamera.setAttribute('rotation', '0 0 0')
+
+    shosh_sound.pause();
+    if(winBool){
+            win_talk.play()
+            win_sound.play()
+            end.setAttribute('src', "#win")
+    }
+    else{
+      lose_talk.play()
+        lose_sound.play()
+        end.setAttribute('src', "#lose")
+    }
+  }
+
+}});
+  </script>
+  </head>
+  <body>
+
+    <a-scene main-ui>
+      <a-assets>
+        <img id="first-bg" src="https://cdn.glitch.com/b2b5616a-4d63-44dc-928f-a04ea904e623%2F9.jpg?1526304344722">
+        <img id="second-bg" src="https://cdn.glitch.com/b2b5616a-4d63-44dc-928f-a04ea904e623%2F8.jpg?1526304351476">
+        <img id="third-bg" src="https://cdn.glitch.com/b2b5616a-4d63-44dc-928f-a04ea904e623%2F14.jpg?1526304390402">
+        <img id="fourth-bg" src="https://cdn.glitch.com/b2b5616a-4d63-44dc-928f-a04ea904e623%2F15.jpg?1526304356071">
+        <img id="win" src="https://cdn.glitch.com/b2b5616a-4d63-44dc-928f-a04ea904e623%2Fsuccess.jpg?1526320694158">
+        <img id="lose" src="https://cdn.glitch.com/b2b5616a-4d63-44dc-928f-a04ea904e623%2FRIPP.jpg?1526312995881">
+
+        <img id="logo" src="https://cdn.glitch.com/b2b5616a-4d63-44dc-928f-a04ea904e623%2F%D7%A9%D7%95%D7%A9%D7%A7%D7%99%20%D7%9C%D7%95%D7%92%D7%95-01.png?1526298057314">
+        <img id="wig" src="https://cdn.glitch.com/b2b5616a-4d63-44dc-928f-a04ea904e623%2Fpea.png?1526304518318">
+        <img id="gefilte" src="https://cdn.glitch.com/b2b5616a-4d63-44dc-928f-a04ea904e623%2FGefilte.png?1526304479701">
+        <img id="purse" src="https://cdn.glitch.com/b2b5616a-4d63-44dc-928f-a04ea904e623%2FBag.png?1526304463684">
+        <img id="shoe" src="https://cdn.glitch.com/b2b5616a-4d63-44dc-928f-a04ea904e623%2Fshoe.png?1526309678263">
+
+
+        <a-mixin id="overlay-scale" animation="property: scale; dir: normal; dur: 1000; easing: easeOutQuad; loop: false; from:1 1 1; to: 1.5 1.5 1.5; startEvents: mouseenter; pauseEvents: mouseleave" onclick="nextScene()"></a-mixin>
+      </a-assets>
+      <a-sky color="#000000"></a-sky>
+
+
+
+      <a-sphere id ="r1" radius="100" position="0 0 0" src="#first-bg" color="#333333" visible="true" material="side: double;"></a-sphere>
+      <a-sphere id ="r2" radius="100" position="0 0 210" src="#second-bg" visible="true" material="side: double;"></a-sphere>
+      <a-sphere id ="r3" radius="100" position="0 0 420" src="#third-bg" visible="true" material="side: double;" animation="property: opacity; dir: normal; dur: 1500;
+               easing: easeOutQuad; loop: false; from:0; to: 1; delay: 1250;" ></a-sphere>
+      <a-sphere id ="r4" radius="100" position="0 0 630" src="#fourth-bg" visible="true" material="side: double;"></a-sphere>
+      <a-sphere id ="r5" radius="100" position="0 0 840" color="#000" visible="true" material="side: double;"></a-sphere>
+
+      <a-plane id="openning-screen" position="0 1 -8" width="9" height="7" opacity="0" color="#000">
+        <a-image id="logo-image"
+                src="#logo" class="clickable"
+                width="7" height="6" position="0 0 0"
+                 animation="property: scale; dir: normal; dur: 2500; easing: easeOutQuad; loop: false; from:0.5 0.5 0.5; to: 1.5 1.5 1.5;">
+        </a-image></a-plane>
+
+<!--       <a-plane id="end-screen" position="8 1 860" rotation="-195 -250 -180" width="9" height="7" opacity="1" color="#000"> -->
+      <a-plane id="end-screen" position="0 1 860" rotation="0 0 0" width="18" height="18" opacity="0" color="#000">
+
+        <a-image id="end-image"
+                 class="clickable" src="#win"
+                width="18" height="15" position="0 0 0" ></a-image></a-plane>
+
+
+      <a-plane id="first-clue" class="clickable" size="0.3 0.3" rotation="0 -130 -4"
+                position="16 1.8 13" mixin="overlay-scale"  visible="false" opacity="0">
+          <a-image
+                    src="#wig" class="clickable"
+                    position="0 0 0"
+          ></a-image>
+      </a-plane>
+      <a-plane id="second-clue" class="clickable" size="0.3 0.3" rotation="0 130 -4"
+                position="-1 -5 233" mixin="overlay-scale" >
+         <a-image
+                    src="#gefilte" class="clickable"
+                    position="0 0 0"
+          ></a-image>
+      </a-plane>
+      <a-plane id="third-clue" class="clickable" rotation="0 350 -4"
+                position="20 43 390" mixin="overlay-scale" opacity="0">
+      <a-image
+                    src="#purse" class="clickable"
+                    position="0 0 0" scale="7 7 7"
+          ></a-image>
+      </a-plane>
+      <a-plane id="fourth-clue" class="clickable" size="0.25 0.25" rotation="0 -130 -4"
+                position="18 -2 650" mixin="overlay-scale" opacity="0">
+       <a-image
+                    src="#shoe" class="clickable"
+                    position="0 0 0" size="2 2"
+          ></a-image>
+      </a-plane>
+
+      <!-- Camera + Cursor. -->
+       <a-entity id="main-camera" camera look-controls
+                 animation="property: position; dir: normal; dur: 1000; easing: easeInOutQuad; loop: false; from: 0 0 0; to: 0 0 250; startEvents: viewDetail;">
+
+        <a-plane id="clock-plane" width="1" height=".5" position="0 3 -3" color="#333333" opacity="1">
+            <a-text id="timer" position="0 -5 .02" align="center" line-height="14" opacity="1" value="Start" color="#FF7BB1"></a-text>
+        </a-plane>
+         <a-cursor id="cursor" color="#FF7BB1" raycaster="objects: .clickable"></a-cursor>
+      </a-entity>
+
+
+    </a-scene>
+
+  </body>
+</html>
